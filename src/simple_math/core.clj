@@ -34,7 +34,7 @@
 (defn prompt
   ([] (prompt ""))
   ([q] (prompt q {}))
-  ([q {:keys [parser shell-prompt print-prompt] :or {shell-prompt "> " print-prompt false}}]
+  ([q {:keys [parser shell-prompt print-prompt] :or {shell-prompt "> " print-prompt true}}]
    (if (fn? q)
      (q)
      (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
