@@ -35,12 +35,12 @@
   "Prompt the user for some input. Runs the input through a parser if one is provided."
   ([] (prompt ""))
   ([q] (prompt q {}))
-  ([q {:keys [parser shell-prompt print-prompt] :or {shell-prompt "> " print-prompt true}}]
+  ([q {:keys [parser shell-prompt print-prompt]
+       :or   {parser identity shell-prompt "> " print-prompt true}}]
    (if (fn? q)
      (q)
      (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
-   (when parser
-     (parser (read-line)))))
+   (parser (read-line))))
 
 
 (defn validate-preference
@@ -82,8 +82,8 @@
 (defn level-pref
   "Prompt for and obtain a user's preferred level."
   []
-  (prompt "Please choose your class:" {:print-prompt false})
-  (prompt #(print-preferences preferences :levels))
+  (geek-print "Please choose your class:")
+  (print-preferences preferences :levels)
   (attempt #(validate-preference (:levels preferences)
               (prompt "" {:parser (:int parsers)}))))
 
