@@ -51,8 +51,8 @@
           (< preference min-level))
       (throw
         (ex-info
-          "Invalid level."
-          {:message (format "The selected level has to be between %s and %s"
+          "Invalid option."
+          {:message (format "The selection has to be between %s and %s"
                       min-level
                       max-level)}))
       preference)))
