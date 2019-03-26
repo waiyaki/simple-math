@@ -20,8 +20,7 @@
 
 
 (def parsers
-  {:int   #(Integer/parseInt %)
-   :float #(Float/parseFloat %)})
+  {:int   #(Integer/parseInt %)})
 
 
 (defn print-preferences [preferences pref & {:keys [geek] :or {geek true}}]
