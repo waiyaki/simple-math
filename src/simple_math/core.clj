@@ -88,22 +88,24 @@
            (recur (dec n))))))))
 
 
-(defn level-pref
-  "Prompt for and obtain a user's preferred level."
-  []
-  (geek-print "Please choose your class:")
-  (print-preferences preferences :levels)
-  (attempt #(validate-preference (:levels preferences)
-              (prompt "" {:parser (:int parsers)}))))
+(defn pref
+  "Return a function which when invoked will prompt for and obtain a user's preference"
+  [prompt-str preference & {:keys [parser]}]
+  (fn []
+    (geek-print prompt-str)
+    (print-preferences preferences preference)
+    (attempt #(validate-preference (preference preferences)
+                (prompt "" {:parser (parser parsers)})))))
 
 
-(defn op-pref
-  "Prompt for and obtain a user's preferred math operation"
-  []
-  (geek-print "Please choose the math you want to do:")
-  (print-preferences preferences :ops)
-  (attempt #(validate-preference (:ops preferences)
-              (prompt "" {:parser (:int parsers)}))))
+(def level-pref (pref "Please choose your class:"
+                  :levels
+                  :parser :int))
+
+
+(def op-pref (pref "Please choose the math you want to do:"
+                :ops
+                :parser :int))
 
 
 (defn -main []
