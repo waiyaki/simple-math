@@ -16,7 +16,17 @@
 (def preferences
   {:levels {1 "Level 1 (Class 2 - 3)"
             2 "Level 2 (Class 3 - 4)"
-            3 "Level 3 (Class 4 - 5)"}})
+            3 "Level 3 (Class 4 - 5)"}
+   :ops    {1 "Addition"
+            2 "Subtraction"
+            3 "Multiplication"
+            4 "Division"}})
+
+
+(def option->op {1 +
+                 2 -
+                 3 *
+                 4 /})
 
 
 (def parsers
@@ -87,7 +97,20 @@
               (prompt "" {:parser (:int parsers)}))))
 
 
+(defn op-pref
+  "Prompt for and obtain a user's preferred math operation"
+  []
+  (geek-print "Please choose the math you want to do:")
+  (print-preferences preferences :ops)
+  (attempt #(validate-preference (:ops preferences)
+              (prompt "" {:parser (:int parsers)}))))
+
+
 (defn -main []
   (println "This is main!!")
-  (let [level (level-pref)]
-    (println "Level:" level)))
+  (let [level     (level-pref)
+        op-option (op-pref)
+        op        (option->op op-option)]
+    (println "Level:" level)
+    (println "Op option" op-option)
+    (println "Op: " op)))
