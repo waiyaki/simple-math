@@ -29,6 +29,19 @@
                  4 /})
 
 
+(defn limits
+  "Return the lower and upper limits of the numbers within which to generate
+  math operations with, based on the user's limit"
+  [level]
+  ({1 [1 5]
+    2 [1 12]
+    3 [1 20]} level))
+
+
+(defn random-int [min max]
+  (int (Math/floor (+ min (* max (Math/random))))))
+
+
 (def parsers
   {:int   #(Integer/parseInt %)})
 
