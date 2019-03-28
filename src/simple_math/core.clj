@@ -1,18 +1,6 @@
 (ns simple-math.core)
 
 
-(defn geek-print
-  "Print output like those hacker terminals in movies."
-  [s & {:keys [final-newline delay-ms]
-        :or   {final-newline true delay-ms 20}}]
-  (doseq [c s]
-    (print c)
-    (flush)
-    (Thread/sleep delay-ms))
-  (when final-newline
-    (print "\n")))
-
-
 (def preferences
   {:levels {1 "Level 1 (Class 2 - 3)"
             2 "Level 2 (Class 3 - 4)"
@@ -27,6 +15,22 @@
                  2 -
                  3 *
                  4 /})
+
+
+(def parsers
+  {:int   #(Integer/parseInt %)})
+
+
+(defn geek-print
+  "Print output like those hacker terminals in movies."
+  [s & {:keys [final-newline delay-ms]
+        :or   {final-newline true delay-ms 20}}]
+  (doseq [c s]
+    (print c)
+    (flush)
+    (Thread/sleep delay-ms))
+  (when final-newline
+    (print "\n")))
 
 
 (defn limits
@@ -48,29 +52,6 @@
   (let [[lower upper] (limits level)]
     (for [_ (range (if (< upper 10) 10 (max 15 upper)))]
       [(random-int lower upper) (random-int lower upper)])))
-
-
-(def parsers
-  {:int   #(Integer/parseInt %)})
-
-
-(defn print-preferences [preferences pref & {:keys [geek] :or {geek true}}]
-  (doseq [[idx desc] (pref preferences)]
-    (if geek
-      (geek-print (format "%s. %s" idx desc))
-      (print (format "%s. %s" idx desc)))))
-
-
-(defn prompt
-  "Prompt the user for some input. Runs the input through a parser if one is provided."
-  ([] (prompt ""))
-  ([q] (prompt q {}))
-  ([q {:keys [parser shell-prompt print-prompt]
-       :or   {parser identity shell-prompt "> " print-prompt true}}]
-   (if (fn? q)
-     (q)
-     (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
-   (parser (read-line))))
 
 
 (defn validate-preference
@@ -107,6 +88,25 @@
          (if result
            result
            (recur (dec n))))))))
+
+
+(defn print-preferences [preferences pref & {:keys [geek] :or {geek true}}]
+  (doseq [[idx desc] (pref preferences)]
+    (if geek
+      (geek-print (format "%s. %s" idx desc))
+      (print (format "%s. %s" idx desc)))))
+
+
+(defn prompt
+  "Prompt the user for some input. Runs the input through a parser if one is provided."
+  ([] (prompt ""))
+  ([q] (prompt q {}))
+  ([q {:keys [parser shell-prompt print-prompt]
+       :or   {parser identity shell-prompt "> " print-prompt true}}]
+   (if (fn? q)
+     (q)
+     (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
+   (parser (read-line))))
 
 
 (defn pref
