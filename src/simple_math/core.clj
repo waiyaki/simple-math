@@ -42,6 +42,14 @@
   (int (Math/floor (+ min (* max (Math/random))))))
 
 
+(defn gen-random-table
+  "Generate rows of pairs of limited random numbers to use as questions for this level."
+  [level]
+  (let [[lower upper] (limits level)]
+    (for [_ (range (if (< upper 10) 10 (max 15 upper)))]
+      [(random-int lower upper) (random-int lower upper)])))
+
+
 (def parsers
   {:int   #(Integer/parseInt %)})
 
