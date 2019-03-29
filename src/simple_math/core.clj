@@ -54,6 +54,30 @@
       [(random-int lower upper) (random-int lower upper)])))
 
 
+(defn attempt
+  "Try a function a couple of times, give up if retries run out before a valid
+  input is obtained."
+  ([f] (attempt f {}))
+  ([f {:keys [retries fail-silently]
+       :or   {retries 3 fail-silently false} :as opts}]
+   (loop [n retries]
+     (when (> n 0)
+       (let [result
+             (try
+               (f)
+               (catch Exception e
+                 (let [message (format "%s %s" (ex-message e)
+                                 (if (<= (dec n) 0) "" (:message (ex-data e))))]
+                   (geek-print message)
+                   (when (and (not fail-silently) (<= (dec n) 0))
+                     (throw
+                       (ex-info message
+                         {:message (format "Giving up after %s tries." retries)}))))))]
+         (if result
+           result
+           (recur (dec n))))))))
+
+
 (defn validate-preference
   "Ensure the selected preference is within allowable range."
   [preferences preference]
@@ -68,27 +92,6 @@
                       min-level
                       max-level)}))
       preference)))
-
-
-(defn attempt
-  "Try a function a couple of times, give up if retries run out before a valid
-  input is obtained."
-  ([f] (attempt f {}))
-  ([f {:keys [retries silent]
-       :or   {retries 3 silent true} :as opts}]
-   (loop [n retries]
-     (when (> n 0)
-       (let [result (try
-                      (f)
-                      (catch Exception e
-                        (geek-print (format "%s %s"
-                                      (ex-message e)
-                                      (:message (ex-data e))))
-                        (when (and (not silent) (<= (dec n) 0))
-                          (geek-print (format "Giving up after %s tries." retries)))))]
-         (if result
-           result
-           (recur (dec n))))))))
 
 
 (defn print-preferences [preferences pref & {:keys [geek] :or {geek true}}]
