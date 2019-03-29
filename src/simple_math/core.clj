@@ -19,7 +19,7 @@
 
 
 (def parsers
-  {:int   #(Integer/parseInt %)})
+  {:int #(Integer/parseInt %)})
 
 
 (defn geek-print
