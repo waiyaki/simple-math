@@ -73,8 +73,9 @@
 (defn attempt
   "Try a function a couple of times, give up if retries run out before a valid
   input is obtained."
-  ([f] (attempt f 3))
-  ([f retries]
+  ([f] (attempt f {}))
+  ([f {:keys [retries silent]
+       :or   {retries 3 silent true} :as opts}]
    (loop [n retries]
      (when (> n 0)
        (let [result (try
@@ -83,7 +84,7 @@
                         (geek-print (format "%s %s"
                                       (ex-message e)
                                       (:message (ex-data e))))
-                        (when (<= (dec n) 0)
+                        (when (and (not silent) (<= (dec n) 0))
                           (geek-print (format "Giving up after %s tries." retries)))))]
          (if result
            result
