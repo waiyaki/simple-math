@@ -36,14 +36,14 @@
 
 (defn limits
   "Return the lower and upper limits of the numbers within which to generate
-  math operations with, based on the user's limit"
+  math operations, based on the user's level"
   [level]
   ({1 [1 5]
     2 [1 12]
     3 [1 20]} level))
 
 
-(defn random-int [min max]
+(defn bounded-random-int [min max]
   (int (Math/floor (+ min (* max (Math/random))))))
 
 
@@ -51,8 +51,8 @@
   "Generate rows of pairs of limited random numbers to use as questions for this level."
   [level]
   (let [[lower upper] (limits level)]
-    (for [_ (range (if (< upper 10) 10 (max 15 upper)))]
-      [(random-int lower upper) (random-int lower upper)])))
+    (for [_ (range (min 10 lower) (+ 1 (min 15 upper)))]
+      [(bounded-random-int lower upper) (bounded-random-int lower upper)])))
 
 
 (defn attempt
