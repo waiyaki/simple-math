@@ -1,4 +1,5 @@
-(ns simple-math.core)
+(ns simple-math.core
+  (:require [clojure.string :as str]))
 
 
 (def preferences
@@ -78,6 +79,27 @@
            (recur (dec n))))))))
 
 
+(defn prompt
+  "Prompt the user for some input. Runs the input through a parser if one is provided."
+  ([] (prompt ""))
+  ([q] (prompt q {}))
+  ([q {:keys [parser shell-prompt print-prompt accept-blank]
+       :or   {parser identity
+              shell-prompt "> "
+              print-prompt true
+              accept-blank false}}]
+   (let [prompt* (fn []
+                   (if (fn? q)
+                     (q)
+                     (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
+                   (read-line))
+         input (prompt*)]
+     (loop [input input]
+       (if (and (str/blank? input) (not accept-blank))
+         (recur (prompt*))
+         (parser input))))))
+
+
 (defn validate-preference
   "Ensure the selected preference is within allowable range."
   [preferences preference]
@@ -99,18 +121,6 @@
     (if geek
       (geek-print (format "%s. %s" idx desc))
       (print (format "%s. %s" idx desc)))))
-
-
-(defn prompt
-  "Prompt the user for some input. Runs the input through a parser if one is provided."
-  ([] (prompt ""))
-  ([q] (prompt q {}))
-  ([q {:keys [parser shell-prompt print-prompt]
-       :or   {parser identity shell-prompt "> " print-prompt true}}]
-   (if (fn? q)
-     (q)
-     (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
-   (parser (read-line))))
 
 
 (defn pref
