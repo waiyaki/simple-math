@@ -12,10 +12,10 @@
             4 "Division"}})
 
 
-(def option->op {1 +
-                 2 -
-                 3 *
-                 4 /})
+(def option->op {1 '+
+                 2 '-
+                 3 '*
+                 4 '/})
 
 
 (def parsers
@@ -139,8 +139,39 @@
 
 
 (def op-pref (pref "Please choose the math you want to do:"
-                :ops
-                :parser :int))
+               :ops
+               :parser :int))
+
+
+(defn check-answer
+  "Given a math op and some inputs, check whether the provided answer is the
+  correct result of applying op to inputs"
+  [ans op [x y :as inputs]]
+  (if (not= ans (apply (resolve op) inputs))
+    (throw
+      (ex-info
+        (format "%s is not the correct answer." ans)
+        {:message "Please try again."}))
+    ans))
+
+
+(defn attempt-op
+  "Attempt prompting the user for the answer to a math op a number of times.
+  Yield the answer when it is correct, or give up if the number of tries are
+  exhausted before the correct answer is obtained."
+  [index op [x y :as inputs]]
+  (attempt
+    (fn []
+      (check-answer
+        (prompt (format "%s. %d %s %d = " index x (name op) y)
+          {:parser (:int parsers)
+           :print-prompt false})
+        op
+        inputs))
+    {:fail-silently true}))
+
+
+(defn do-math [table op])
 
 
 (defn -main []
@@ -148,6 +179,4 @@
   (let [level     (level-pref)
         op-option (op-pref)
         op        (option->op op-option)]
-    (println "Level:" level)
-    (println "Op option" op-option)
-    (println "Op: " op)))
+    (println (attempt-op 3 op [3 4]))))
