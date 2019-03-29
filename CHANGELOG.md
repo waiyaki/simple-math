@@ -1,3 +1,26 @@
+# [](/compare/v0.0.2...v) (2019-03-29)
+
+
+### Code Refactoring
+
+* **operations:** change how attempt takes options 2a937ca
+
+
+### Features
+
+* **attempt:** make attempt optionally fail silently eb1ba49
+* **limits:** Add limits 65f59cd
+* **math:** Attempt a single math op d74f430
+* **math:** Generate numbers to use in math ops 2248e3f
+* **prompt:** make prompt optionally accept or reject empty input 0afe287
+
+
+### BREAKING CHANGES
+
+* **operations:** `attempt` now takes options as a config map
+
+
+
 # [0.0.2](/compare/v0.0.1...v0.0.2) (2019-03-26)
 
 
