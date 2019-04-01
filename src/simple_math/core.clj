@@ -7,14 +7,15 @@
             2 "Level 2 (Class 3 - 4)"
             3 "Level 3 (Class 4 - 5)"}
    :ops    {1 "Addition"
-            2 "Subtraction"
-            3 "Multiplication"
-            4 "Division"}})
+            2 "Multiplication"
+            ;; 3 "Subtraction"
+            ;; 4 "Division"
+            }})
 
 
 (def option->op {1 '+
-                 2 '-
-                 3 '*
+                 2 '*
+                 3 '-
                  4 '/})
 
 
