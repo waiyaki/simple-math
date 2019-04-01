@@ -84,7 +84,7 @@
   ([] (prompt ""))
   ([q] (prompt q {}))
   ([q {:keys [parser shell-prompt print-prompt accept-blank]
-       :or   {parser identity
+       :or   {parser       identity
               shell-prompt "> "
               print-prompt true
               accept-blank false}}]
@@ -93,7 +93,7 @@
                      (q)
                      (geek-print (format "%s%s" (if print-prompt shell-prompt "") q)))
                    (read-line))
-         input (prompt*)]
+         input   (prompt*)]
      (loop [input input]
        (if (and (str/blank? input) (not accept-blank))
          (recur (prompt*))
@@ -171,12 +171,17 @@
     {:fail-silently true}))
 
 
-(defn do-math [table op])
+(defn do-math [level op]
+  (let [table (gen-random-table level)]
+    (dorun
+      (map-indexed
+        (fn [idx inputs]
+          (attempt-op (inc idx) op inputs))
+        table))))
 
 
 (defn -main []
-  (println "This is main!!")
   (let [level     (level-pref)
         op-option (op-pref)
         op        (option->op op-option)]
-    (println (attempt-op 3 op [3 4]))))
+    (do-math level op)))
