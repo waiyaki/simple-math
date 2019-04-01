@@ -161,15 +161,18 @@
   Yield the answer when it is correct, or give up if the number of tries are
   exhausted before the correct answer is obtained."
   [index op [x y :as inputs]]
-  (attempt
-    (fn []
-      (check-answer
-        (prompt (format "%s. %d %s %d = " index x (name op) y)
-          {:parser (:int parsers)
-           :print-prompt false})
-        op
-        inputs))
-    {:fail-silently true}))
+  (let [ans (attempt
+              (fn []
+                (check-answer
+                  (prompt #(geek-print (format "%s. %d %s %d = " index x (name op) y)
+                             :final-newline false)
+                    {:parser       (:int parsers)
+                     :print-prompt false})
+                  op
+                  inputs))
+              {:fail-silently true})]
+    (when ans
+      (geek-print "Correct!\n"))))
 
 
 (defn do-math [level op]
