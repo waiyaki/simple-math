@@ -45,7 +45,13 @@
 
 
 (defn bounded-random-int [min max]
-  (int (Math/floor (+ min (* max (Math/random))))))
+  (assert (<= min max) "`min` has to be less than or equal to `max`")
+  (if (= min max)
+    min
+    (let [r (+ min (rand-int max))]
+      (if (> r max)
+        (+ min (mod r max))
+        r))))
 
 
 (defn gen-random-table
