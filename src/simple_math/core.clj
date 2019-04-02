@@ -58,7 +58,7 @@
   "Generate rows of pairs of limited random numbers to use as questions for this level."
   [level]
   (let [[lower upper] (limits level)]
-    (for [_ (range (min 10 lower) (+ 1 (min 15 upper)))]
+    (for [_ (range 0 (min 15 upper))]
       [(bounded-random-int lower upper) (bounded-random-int lower upper)])))
 
 
@@ -150,14 +150,18 @@
                :parser :int))
 
 
+(defn perform-op [op inputs]
+  (apply (resolve op) inputs))
+
+
 (defn check-answer
   "Given a math op and some inputs, check whether the provided answer is the
   correct result of applying op to inputs"
-  [ans op [x y :as inputs]]
-  (if (not= ans (apply (resolve op) inputs))
+  [ans op inputs]
+  (if (not= ans (perform-op op inputs))
     (throw
       (ex-info
-        (format "%s is not the correct answer." ans)
+        (format "\t%s is not the correct answer." ans)
         {:message "Please try again."}))
     ans))
 
@@ -177,8 +181,9 @@
                   op
                   inputs))
               {:fail-silently true})]
-    (when ans
-      (geek-print "Correct!\n"))))
+    (if ans
+      (geek-print "\tCorrect!\n")
+      (geek-print (format "\n\t=> %d %s %d = %d\n" x (name op) y (perform-op op inputs))))))
 
 
 (defn do-math [level op]
