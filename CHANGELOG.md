@@ -1,4 +1,18 @@
-# [v0.0.4](/compare/v0.0.3...v0.0.4) (2019-04-01)
+# [](/compare/v0.0.5...v) (2019-04-04)
+
+
+
+## [0.0.5](/compare/v0.0.4...v0.0.5) (2019-04-02)
+
+
+### Features
+
+* **math:** Better bounded random int generation d229fb4
+* **math:** provide the answer if can't get it after all retries 3d28bd8
+
+
+
+## [0.0.4](/compare/v0.0.3...v0.0.4) (2019-04-01)
 
 
 ### Bug Fixes
@@ -14,7 +28,7 @@
 
 
 
-# [v0.0.3](/compare/v0.0.2...v0.0.3) (2019-03-29)
+## [0.0.3](/compare/v0.0.2...v0.0.3) (2019-03-29)
 
 
 ### Code Refactoring
@@ -37,7 +51,7 @@
 
 
 
-# [v0.0.2](/compare/v0.0.1...v0.0.2) (2019-03-26)
+## [0.0.2](/compare/v0.0.1...v0.0.2) (2019-03-26)
 
 
 ### Features
@@ -48,7 +62,7 @@
 
 
 
-## [v0.0.1](/compare/175d9ec...v0.0.1) (2019-03-26)
+## [0.0.1](/compare/175d9ec...v0.0.1) (2019-03-26)
 
 
 ### Bug Fixes
@@ -61,3 +75,6 @@
 
 * **levels:** Add ability to prompt for level preference, with retries bdbff47
 * **levels:** Show level preferences and accept level input 175d9ec
+
+
+
