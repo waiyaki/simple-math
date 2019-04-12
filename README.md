@@ -11,3 +11,6 @@ Run the application using
 ``` shell
 clj -m simple-math.core
 ```
+
+## Example
+![](https://github.com/waiyaki/simple-math/blob/master/resources/docs/simple-math.gif)
